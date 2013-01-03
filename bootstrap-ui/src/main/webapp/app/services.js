@@ -3,7 +3,11 @@ var services = angular.module('smlBootstrap.services', ['ngResource']);
 var dontBlockOnAjaxHeader = { "dontBlockPageOnAjax": "true" };
 var nonArrayGetWithoutBlockOnAjax = { method: "GET", isArray: false, headers: dontBlockOnAjaxHeader };
 
-
+services.constant('ajaxNonBlockingPageQuery', {
+    method: 'GET',
+    isArray: false,
+    headers: {'dontBlockPageOnAjax': 'true'}
+});
 
 services.factory('EntriesService', function ($resource) {
 
@@ -128,12 +132,12 @@ services.factory('UserSessionService', function ($resource) {
 });
 
 
-services.factory('UtilService', function ($resource) {
+services.factory('UtilService', function ($resource, ajaxNonBlockingPageQuery) {
 
     var self = this;
 
     self.utilResource = $resource('/rest/uptime', { }, {
-        get: nonArrayGetWithoutBlockOnAjax
+        get: ajaxNonBlockingPageQuery
     });
 
     var utilService = {};
